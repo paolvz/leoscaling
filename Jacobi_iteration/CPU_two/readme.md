@@ -45,6 +45,8 @@ array=62x62
 ```
 ## EXTRA: Plot the Animated GIF of the iterations
 
+![jacobi animation](test.gif)
+
 1) Compile and run the gif version
 ```
 mpicc -O3 -D MATRIX_SIZE=$MATRIX_SIZE -D ITERATIONS=$ITERATIONS jacobi_cont_io_gif.c -o jacobi_cont_io_gif.x -fopenmp
