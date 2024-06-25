@@ -44,6 +44,11 @@ Results are saved in matrix.bin file.
 ```
 gnuplot plot_io.plt --persist
 ```
+NOTE: To plot matrix with size != 62, change the following line with your size in the `plot_io.plt` file before running gnuplot:
+
+```
+array=62x62
+```
 
 ## Launch scaling on CPU nodes of Leonardo Cluster (DCGP PARTITION)
 
