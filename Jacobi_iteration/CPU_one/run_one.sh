@@ -42,9 +42,6 @@ rm -f jacobi_one_${METHOD}_${SLURM_NNODES}.x
 
 #GENERATE DATA AND PLOT
 
-
-
-
 if [ $SLURM_NNODES -eq 1 ]; then
 
 sh run_data.sh

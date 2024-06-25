@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#GENERATE DATA AND PLOT
+#GENERATE DATA AND PLOT FILES
 
 
 touch ./OUT_${METHOD}_${MATRIX_SIZE}/gen_data.sh

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Array of node counts
-# Array of node counts
 export NODE_COUNTS=(1 2 4 8 16)
 
 

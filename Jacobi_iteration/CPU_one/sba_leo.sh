@@ -33,11 +33,12 @@ export ACCOUNT=ict24_dssc_cpu
     
 
 
-echo -e "\nCPU JACOBI ITERATION:\n"
+echo -e "\nCPU JACOBI ITERATION (ONE SIDE):\n"
 echo PARTITION: $PARTITION
 echo QOS: $QOS
 echo MATRIX_SIZE: $MATRIX_SIZE
 echo ITERATIONS: $ITERATIONS    
+echo METHOD: $METHOD
 echo -e "CPUS_PER_TASK: $CPUS_PER_TASK"
 echo -e "TASKS PER NODE: $NTASKS\n"
 

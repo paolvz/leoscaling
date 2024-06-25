@@ -6,7 +6,7 @@ export NODE_COUNTS=(1 2 4 8 16)
 export METHOD=$1
 export MATRIX_SIZE=$2
 
-# Set the number of iterations for the average
+# Set the number of iterations for the average 
 if [ $METHOD == "naive" ]; then
     export NUM_AVG=1
 else 

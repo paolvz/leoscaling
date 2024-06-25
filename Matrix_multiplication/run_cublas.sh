@@ -25,7 +25,7 @@ fi
 echo -e "###############################################\n"
 
 
-# Set the number of threads to 64
+
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 
