@@ -20,15 +20,6 @@ if [[ $CLUSTER_NAME == *"leonardo"* ]]; then
     # Set the CUDA+MPI path
     export CUDAMPI="-I/leonardo/prod/opt/libraries/openmpi/4.1.6/nvhpc--23.11/include -L/leonardo/prod/opt/libraries/openmpi/4.1.6/nvhpc--23.11/lib -lmpi -lcublas"
     export ARCH=sm_80
-else
-    echo "Running on Orfeo"
-    module load cuda/12.1
-    module load openMPI/4.1.5/gnu/12.2.1
-    # Set the CUDA+MPI path
-    export CUDAMPI="-I/opt/programs/openMPI/4.1.5/include/ -L/opt/programs/openMPI/4.1.5/lib/ -lmpi -lcublas"
-
-    export ARCH=sm_70
-    
 fi
 
 echo -e "###############################################\n"
