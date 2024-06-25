@@ -15,13 +15,6 @@ if [[ $CLUSTER_NAME == *"leonardo"* ]]; then
     module load openmpi/4.1.6--nvhpc--23.11  
     #module load openblas/0.3.24--nvhpc--23.11 
     module load intel-oneapi-mkl/2023.2.0 
-else
-    echo "Running on Orfeo"
-
-    # Load any necessary modules
-    module load openMPI/4.1.5/gnu/12.2.1
-    #module load openBLAS/0.3.23
-    module load mkl
 fi
 echo -e "###############################################\n"
 
