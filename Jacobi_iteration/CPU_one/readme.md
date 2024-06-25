@@ -3,6 +3,11 @@
 There are two version of this implementation `jacobi_one_put.c` using the MPI_Put routine and the `jacobi_one_get.c` using the 
 MPI_Get routine.
 
+The default scaling settings are:
+- 1 2 4 8 16 scaling nodes
+- 1 MPI task mapped per node
+- 112 OpenMP thread per node (1 per core)
+
 ## Launch a single instance of the algorithm in local 
 
 Requirements: OpenMPI and OpenMP installation (latest)
