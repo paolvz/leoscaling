@@ -16,12 +16,7 @@ export CLUSTER_NAME=$(hostname)
 if [[ $CLUSTER_NAME == *"leonardo"* ]]; then
     echo "Running on Leonardo"
     # Load any necessary modules
-    module load openmpi/4.1.6--nvhpc--23.11
-else
-    echo "Running on Orfeo"
-    module load cuda/12.1
-    module load openMPI/4.1.5/gnu/12.2.1
-    
+    module load openmpi/4.1.6--nvhpc--23.11    
 fi
 
 echo -e "###############################################\n"
