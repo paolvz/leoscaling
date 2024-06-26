@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#GENERATE DATA AND PLOT FILES
+#GENERATE DATA AND PLOT
 
 
 touch ./OUT_${MATRIX_SIZE}_${ITERATIONS}/gen_data.sh
@@ -76,7 +76,7 @@ set boxwidth 0.5 relative
 
 set palette defined (0 "red", 1 "green", 2 "blue")
 set key outside
-set title "CPU JACOBI | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
+set title "GPU JACOBI OpenACC | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
 
@@ -85,25 +85,25 @@ plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}.dat' using 1:xtic(4) title "Initializatio
 
 
 set output 'plot_comp.png'
-set title "CPU JACOBI | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
+set title "GPU JACOBI OpenACC | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
 plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}.dat' using 3:xtic(4) title "Computation"
 
 set output 'plot_comm.png'
-set title "CPU JACOBI | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
+set title "GPU JACOBI OpenACC | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
 plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}.dat' using 2:xtic(4) title "Communication"
 
 set output 'plot_init.png'
-set title "CPU JACOBI | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
+set title "GPU JACOBI OpenACC | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
 plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}.dat' using 1:xtic(4) title "Initialization"
 
 set output 'speedup.png'
-set title "CPU JACOBI | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
+set title "GPU JACOBI OpenACC | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Speedup" font ",16"
 set xrange [1:*]

@@ -150,9 +150,21 @@ int main(int argc, char **argv)
     double *cu_B_TEMP_N;
     double *cu_C_TEMP_N;
     
-    
+    cudaMalloc((void**)&cu_A_LOC, N_LOC * N * sizeof(double));
     cudaMalloc((void**)&cu_C_TEMP_N, N_LOC * N * sizeof(double));
+
+
+
+    double start_cpu_gpu;
+    double end_cpu_gpu;
+
+    start_cpu_gpu = MPI_Wtime();
     
+    cudaMemcpy(cu_A_LOC, A_LOC, N_LOC * N * sizeof(double), cudaMemcpyHostToDevice);
+    cudaDeviceSynchronize();
+    
+    end_cpu_gpu = MPI_Wtime();
+    final_gpu_cpu += end_cpu_gpu - start_cpu_gpu;
     
     double *cu_C_LOC = cu_C_TEMP_N;
     ////// GPU ///////
@@ -160,8 +172,6 @@ int main(int argc, char **argv)
     int N_COL = N_LOC;
    
     
-    double start_cpu_gpu;
-    double end_cpu_gpu;
 
 
     for (int k = 0; k < size; k++)
@@ -242,7 +252,7 @@ int main(int argc, char **argv)
         /////////// GPU /////////////
 
 
-        cudaMalloc((void**)&cu_A_LOC, N_LOC * N * sizeof(double));
+        
         cudaMalloc((void**)&cu_B_TEMP_N, N_COL * N * sizeof(double));
         
         
@@ -251,7 +261,7 @@ int main(int argc, char **argv)
 
         start_cpu_gpu = MPI_Wtime();
 
-        cudaMemcpy(cu_A_LOC, A_LOC, N_LOC * N * sizeof(double), cudaMemcpyHostToDevice);
+       
         cudaMemcpy(cu_B_TEMP_N, B_TEMP_N, N_COL * N * sizeof(double), cudaMemcpyHostToDevice);
         
         cudaDeviceSynchronize();
@@ -299,7 +309,7 @@ int main(int argc, char **argv)
     /////// GPU /////////////
     
     
-    //check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
+    check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
     
 
     MPI_Reduce(&final_comp, &max_comp_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
