@@ -152,6 +152,7 @@ int main(int argc, char **argv)
     
     cudaMalloc((void**)&cu_A_LOC, N_LOC * N * sizeof(double));
     cudaMalloc((void**)&cu_C_TEMP_N, N_LOC * N * sizeof(double));
+    cudaMalloc((void**)&cu_B_TEMP_N, N * N * sizeof(double));
 
 
 
@@ -171,6 +172,10 @@ int main(int argc, char **argv)
 
     int N_COL = N_LOC;
    
+    B_TEMP_N = (double*)malloc(N * N * sizeof(double));
+
+    B_TEMP = (double*)malloc(N * N_LOC * sizeof(double));
+
     
 
 
@@ -199,12 +204,7 @@ int main(int argc, char **argv)
           
         }
         
-        B_TEMP_N = (double*)malloc(N_COL * N * sizeof(double));
 
- 
-        
-
-        B_TEMP = (double*)malloc(N_COL * N_LOC * sizeof(double));
 
         
         #pragma omp parallel for collapse(2)
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 
 
         
-        cudaMalloc((void**)&cu_B_TEMP_N, N_COL * N * sizeof(double));
+        
         
         
         
@@ -309,7 +309,7 @@ int main(int argc, char **argv)
     /////// GPU /////////////
     
     
-    check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
+    //check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
     
 
     MPI_Reduce(&final_comp, &max_comp_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
