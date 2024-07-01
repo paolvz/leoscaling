@@ -8,6 +8,7 @@ touch ./OUT_${MATRIX_SIZE}_${ITERATIONS}/gen_data.sh
 cat <<EOF > ./OUT_${MATRIX_SIZE}_$ITERATIONS/gen_data.sh
 #!/bin/bash
 
+set -e
 
 for i in 1 2 3 4 5
 do
@@ -25,10 +26,12 @@ module load python
 source ~/.hpc/bin/activate
 python3 average.py
 
-rm -f avg_*.out
-rm -f OUT_${MATRIX_SIZE}_${ITERATIONS}_*.dat
+
 
 gnuplot plot_data.plt
+
+rm -f avg_*.out
+rm -f OUT_${MATRIX_SIZE}_${ITERATIONS}_*.dat
 EOF
 
 cat <<EOF > ./OUT_${MATRIX_SIZE}_$ITERATIONS/average.py
