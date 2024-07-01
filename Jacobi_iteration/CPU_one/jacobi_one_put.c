@@ -133,11 +133,39 @@ int main(int argc, char **argv)
 
     ///////////////////////////
    
-
- 
+MPI_Barrier(MPI_COMM_WORLD);
+double start_comm = MPI_Wtime();
 
 MPI_Win ghost_up_win, ghost_down_win;
+MPI_Win ghost_up_win_new, ghost_down_win_new;
 MPI_Info info;
+
+MPI_Info_create(&info);
+
+MPI_Info_set(info, "same_size", "true");
+MPI_Info_set(info, "same_disp_unit", "true");
+
+// MAT_LOC POINTERS
+double * ghost_up = MAT_LOC;
+double * ghost_down = MAT_LOC + (N_LOC-1) * N;
+double* first_row_point = MAT_LOC + N;
+double* last_row_point = MAT_LOC + (N_LOC-2) * N;
+
+// MAT_LOC_NEW POINTERS
+double * ghost_up_new = MAT_LOC_NEW;
+double * ghost_down_new = MAT_LOC_NEW + (N_LOC-1) * N;
+double* first_row_point_new = MAT_LOC_NEW + N;
+double* last_row_point_new = MAT_LOC_NEW + (N_LOC-2) * N;
+
+
+MPI_Win_create(ghost_up, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win);
+MPI_Win_create(ghost_down, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win);
+
+MPI_Win_create(ghost_up_new, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win_new);
+MPI_Win_create(ghost_down_new, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win_new);
+
+double end_comm = MPI_Wtime();
+final_comm += end_comm - start_comm;
 
 for (int iter= 0; iter <= NUM_ITER; iter++)
 
@@ -148,12 +176,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
 
     
     
-    double * ghost_up = MAT_LOC;
-    double * ghost_down = MAT_LOC + (N_LOC-1) * N;
 
-    
-    double* first_row_point = MAT_LOC + N;
-    double* last_row_point = MAT_LOC + (N_LOC-2) * N;
    
     
   
@@ -164,19 +187,12 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
    
     MPI_Barrier(MPI_COMM_WORLD);
-    double start_comm = MPI_Wtime();
+    start_comm = MPI_Wtime();
 
     
     
-    MPI_Info_create(&info);
 
-    MPI_Info_set(info, "same_size", "true");
-    MPI_Info_set(info, "same_disp_unit", "true");
-    
-
-    MPI_Win_create(ghost_up, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win);
-    MPI_Win_create(ghost_down, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win);
-    
+    if (iter % 2 == 0){
 
     if (rank != 0)
     {   MPI_Win_lock(MPI_LOCK_EXCLUSIVE, rank - 1, MPI_MODE_NOCHECK, ghost_down_win);
@@ -191,12 +207,30 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
         
     }
 
+    } else {
+
+    if (rank != 0)
+    {   MPI_Win_lock(MPI_LOCK_EXCLUSIVE, rank - 1, MPI_MODE_NOCHECK, ghost_down_win_new);
+        MPI_Put(first_row_point_new, N, MPI_DOUBLE, rank - 1, 0, N, MPI_DOUBLE, ghost_down_win_new);
+        MPI_Win_unlock(rank - 1, ghost_down_win_new);
+        
+    }
+    if (rank != size - 1){
+        MPI_Win_lock(MPI_LOCK_EXCLUSIVE, rank + 1, MPI_MODE_NOCHECK, ghost_up_win_new);
+        MPI_Put(last_row_point_new, N, MPI_DOUBLE, rank + 1, 0, N, MPI_DOUBLE, ghost_up_win_new);
+        MPI_Win_unlock(rank + 1, ghost_up_win_new);
+
+    
+
+    }
+    }
+
    
 
     
     
 
-    double end_comm = MPI_Wtime();
+    end_comm = MPI_Wtime();
     final_comm += end_comm - start_comm;
 
     }
