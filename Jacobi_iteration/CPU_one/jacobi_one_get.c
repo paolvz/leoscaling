@@ -133,6 +133,9 @@ int main(int argc, char **argv)
 
     ///////////////////////////
 
+    MPI_Barrier(MPI_COMM_WORLD);
+    double start_comm = MPI_Wtime();
+
     // MAT_LOC POINTERS
     double * ghost_up = MAT_LOC;
     double * ghost_down = MAT_LOC + (N_LOC-1) * N;
@@ -161,7 +164,9 @@ int main(int argc, char **argv)
 
     MPI_Win_create(first_row_point_new, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &first_row_win_new);
     MPI_Win_create(last_row_point_new, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &last_row_win_new);
-
+    
+    double end_comm = MPI_Wtime();
+    final_comm += end_comm - start_comm;
 
 for (int iter= 0; iter <= NUM_ITER; iter++)
 
@@ -183,7 +188,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
    
     MPI_Barrier(MPI_COMM_WORLD);
-    double start_comm = MPI_Wtime();
+    start_comm = MPI_Wtime();
 
 
     if ( iter % 2 == 0){
@@ -229,7 +234,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
     
 
-    double end_comm = MPI_Wtime();
+    end_comm = MPI_Wtime();
     final_comm += end_comm - start_comm;
 
     }
