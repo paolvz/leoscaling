@@ -14,7 +14,7 @@ The default scaling settings are:
 - GPU 
   - 1 2 4 8 16 scaling nodes
   - 4 MPI task mapped per node
-  - 8 OpenMP thread per task
+  - 8 OpenMP threads per task (32 per node, 1 per core)
 
 
 
