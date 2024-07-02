@@ -10,7 +10,7 @@ Library used: MPI (Cuda - Aware), OpenMP, Cuda and OpenACC
 - `Jacobi_iteration/`
   - `CPU_one/` - Jacobi Iteration One Side Communication on CPU
   - `CPU_two/` - Jacobi Iteration Two Side Communication on CPU
-  - `OpenAcc_two_aware/` - Jacobi Iteration Two Side Communication on GPU (Cuda Aware MPI)
+  - `OpenAcc_two_aware/` - Jacobi Iteration Two Side Communication on GPU using Cuda Aware MPI and OpenACC
  
 - `Matrix_multiplication/` 
   - `*naive*` files - Parallel Mat mul using naive implementation on CPU
