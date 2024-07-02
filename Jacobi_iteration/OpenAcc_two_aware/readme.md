@@ -46,3 +46,5 @@ Will be generated 5 plots:
 - speedup.png (Speedup plot)
 
 The raw data results are in the `OUT_size_iterations.dat` file (i.e. `OUT_30000_10.dat`)
+
+NOTE: *For each node we run 5 times and take the average performances*
