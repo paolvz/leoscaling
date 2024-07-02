@@ -94,7 +94,7 @@ Will be generated 5 plots:
 
 The raw data results are in the `OUT_size_iterations_method.dat` file (i.e. `OUT_30000_10_put.dat`)
 
-
+NOTE: *For each node we run 5 times and take the average performances*
 
 
 
