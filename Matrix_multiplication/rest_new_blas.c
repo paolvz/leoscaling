@@ -130,8 +130,8 @@ int main(int argc, char **argv)
 
     // All Gather
 
-    double*B_TEMP;
-    double*B_TEMP_N;
+    double* B_TEMP_N = (double*)malloc((long long int)(N / size + 1) * N * sizeof(double));
+    double* B_TEMP = (double*)malloc((long long int)(N / size + 1) * N_LOC * sizeof(double));
     double*C_TEMP_N = (double*)malloc((long long int)N_LOC * N * sizeof(double));
 
     
@@ -156,14 +156,7 @@ int main(int argc, char **argv)
             C_LOC = C_TEMP_N + (N_COL * k + rest);
         }
         
-        B_TEMP_N = (double*)malloc((long long int)N_COL * N * sizeof(double));
 
-   
-        
-        
-        
-
-        B_TEMP = (double*)malloc((long long int)N_COL * N_LOC * sizeof(double));
 
         
         #pragma omp parallel for collapse(2)
