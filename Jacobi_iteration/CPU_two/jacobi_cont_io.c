@@ -134,12 +134,7 @@ int main(int argc, char **argv)
     /////////////////////////
    
 
-    double * ghost_up = MAT_LOC;
-    double * ghost_down = MAT_LOC + (N_LOC-1) * N;
-
-    
-    double* first_row_point = MAT_LOC + N;
-    double* last_row_point = MAT_LOC + (N_LOC-2) * N;
+ 
 
 
 
@@ -150,7 +145,12 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
     
 
+    double * ghost_up = MAT_LOC;
+    double * ghost_down = MAT_LOC + (N_LOC-1) * N;
+
     
+    double* first_row_point = MAT_LOC + N;
+    double* last_row_point = MAT_LOC + (N_LOC-2) * N;
     
 
    
@@ -165,23 +165,27 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     MPI_Barrier(MPI_COMM_WORLD);
     double start_comm = MPI_Wtime();
 
-    MPI_Request request_up, request_down;
+    MPI_Request request_up_send, request_up_recv;
+    MPI_Request request_down_send, request_down_recv;
+
     if (rank != 0) {
-        MPI_Isend(first_row_point, N, MPI_DOUBLE, rank - 1, 1, MPI_COMM_WORLD, &request_up);
-        MPI_Irecv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, &request_up );
+        MPI_Isend(first_row_point, N, MPI_DOUBLE, rank - 1, 1, MPI_COMM_WORLD, &request_up_send);
+        MPI_Irecv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, &request_up_recv);
     }
-    
+
     if (rank != size - 1) {
-        MPI_Isend(last_row_point, N, MPI_DOUBLE, rank + 1, 0, MPI_COMM_WORLD, &request_down);
-        MPI_Irecv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, &request_down);
+        MPI_Isend(last_row_point, N, MPI_DOUBLE, rank + 1, 0, MPI_COMM_WORLD, &request_down_send);
+        MPI_Irecv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, &request_down_recv);
     }
-    
+
     if (rank != 0) {
-        MPI_Wait(&request_up, MPI_STATUS_IGNORE);
+        MPI_Wait(&request_up_send, MPI_STATUS_IGNORE);
+        MPI_Wait(&request_up_recv, MPI_STATUS_IGNORE);
     }
-    
+
     if (rank != size - 1) {
-        MPI_Wait(&request_down, MPI_STATUS_IGNORE);
+        MPI_Wait(&request_down_send, MPI_STATUS_IGNORE);
+        MPI_Wait(&request_down_recv, MPI_STATUS_IGNORE);
     }
 
     double end_comm = MPI_Wtime();
