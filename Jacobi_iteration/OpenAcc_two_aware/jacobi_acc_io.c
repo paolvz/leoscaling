@@ -168,27 +168,21 @@ int main(int argc, char **argv)
             double start_comm = MPI_Wtime();
 
             MPI_Request request_up, request_down;
-            if (rank != 0)
-            {
+            if (rank != 0) {
                 MPI_Isend(first_row_point, N, MPI_DOUBLE, rank - 1, 1, MPI_COMM_WORLD, &request_up);
-
-                MPI_Recv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Irecv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, &request_up );
             }
 
-            if (rank != size - 1)
-            {
+            if (rank != size - 1) {
                 MPI_Isend(last_row_point, N, MPI_DOUBLE, rank + 1, 0, MPI_COMM_WORLD, &request_down);
-
-                MPI_Recv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Irecv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, &request_down);
             }
 
-            if (rank != 0)
-            {
+            if (rank != 0) {
                 MPI_Wait(&request_up, MPI_STATUS_IGNORE);
             }
 
-            if (rank != size - 1)
-            {
+            if (rank != size - 1) {
                 MPI_Wait(&request_down, MPI_STATUS_IGNORE);
             }
 
@@ -217,6 +211,8 @@ int main(int argc, char **argv)
                 MAT_LOC_NEW[(long long int)i * N + j] = 0.25 * (MAT_LOC[up] + MAT_LOC[down] + MAT_LOC[left] + MAT_LOC[right]);
             }
         }
+        
+
 
         double end_comp = MPI_Wtime();
         final_comp += end_comp - start_comp;

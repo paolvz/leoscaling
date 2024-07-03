@@ -97,7 +97,12 @@ int main(int argc, char **argv)
 
  
     
-  
+double * ghost_up = MAT_LOC;
+double * ghost_down = MAT_LOC + (N_LOC-1) * N;
+
+    
+double* first_row_point = MAT_LOC + N;
+double* last_row_point = MAT_LOC + (N_LOC-2) * N;
 
 
 
@@ -117,12 +122,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
 
     
     
-    double * ghost_up = MAT_LOC;
-    double * ghost_down = MAT_LOC + (N_LOC-1) * N;
 
-    
-    double* first_row_point = MAT_LOC + N;
-    double* last_row_point = MAT_LOC + (N_LOC-2) * N;
    
     
   
@@ -136,12 +136,12 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     MPI_Request request_up, request_down;
     if (rank != 0) {
         MPI_Isend(first_row_point, N, MPI_DOUBLE, rank - 1, 1, MPI_COMM_WORLD, &request_up);
-        MPI_Recv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Irecv(ghost_up, N, MPI_DOUBLE, rank - 1, 0, MPI_COMM_WORLD, &request_up );
     }
     
     if (rank != size - 1) {
         MPI_Isend(last_row_point, N, MPI_DOUBLE, rank + 1, 0, MPI_COMM_WORLD, &request_down);
-        MPI_Recv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Irecv(ghost_down, N, MPI_DOUBLE, rank + 1, 1, MPI_COMM_WORLD, &request_down);
     }
     
     if (rank != 0) {
