@@ -3,7 +3,8 @@
 Code and scripts to run and perform scaling on some classical parallel algorithms (Jacobi Iteration on Heat Equation and Matrix Multiplication) on the Leonardo Supercomputer of Cineca (both on CPU and GPU nodes).
 
 Programming Language: C
-Library used: MPI (Cuda - Aware), OpenMP, Cuda and OpenACC
+
+Library used: MPI (Cuda - Aware), OpenMP, Cuda, OpenACC, MKL and OpenBLAS.
 
 # Tested Algorithms and Folders
 
