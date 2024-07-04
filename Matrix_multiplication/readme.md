@@ -15,10 +15,42 @@ The default scaling settings are:
   - 1 2 4 8 16 scaling nodes
   - 4 MPI task mapped per node
   - 8 OpenMP threads per task (32 per node, 1 per core)
+ 
+    
+## Launch a single instance of the algorithm in local on CPU
+
+Requirements: OpenMPI and OpenMP installation (latest)
+NOTE: *These are instructions only for the naive version. 
+The steps for the blas version are the same but you have also to compile the Intel MKL library*
+
+1) Define enviroment variables
+
+Seleect the MATRIX SIZE 
+```
+export MATRIX_SIZE=100
+```
 
 
 
-## Launch scaling on CPU nodes of Leonardo Cluster (DCGP AND BOOSTER PARTITION)
+2) Compile using mpicc command (use -DSAVE if you want to save the result)
+```
+mpicc rest_new_naive.c -o rest_new_naive.x -fopenmp -DMATRIX_SIZE=$MATRIX_SIZE -DSAVE
+
+```
+3) Run the algorithm in parallel using mpirun with num_proc processes
+```
+mpirun -np num_proc rest_new_naive.c
+```
+Results are saved in result.bin file.
+
+4) Read the result (choose your rows and columns)
+```
+gcc read_matrix.c -o read_matrix.x -DROWS=100 -DCOLS=100
+./read_matrix.x
+```
+
+
+## Launch scaling on nodes of Leonardo Cluster (DCGP AND BOOSTER PARTITION)
 
 1) Set your cpu account
 
