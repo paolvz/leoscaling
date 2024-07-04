@@ -21,7 +21,7 @@ The default scaling settings are:
 
 Requirements: OpenMPI and OpenMP installation (latest)
 NOTE: *These are instructions only for the naive version. 
-The steps for the blas version are the same but you have to compile the 'rest_new_blas.c' file with the Intel MKL library.*
+The steps for the blas version are the same but you have to compile the `rest_new_blas.c` file with the Intel MKL library.*
 
 1) Define enviroment variables
 
@@ -41,7 +41,7 @@ mpicc rest_new_naive.c -o rest_new_naive.x -fopenmp -DMATRIX_SIZE=$MATRIX_SIZE -
 ```
 mpirun -np num_proc rest_new_naive.c
 ```
-Results are saved in result.bin file.
+Results are saved in `result.bin` file.
 
 4) Read the result (choose your rows and columns)
 ```
