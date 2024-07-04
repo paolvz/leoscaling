@@ -246,7 +246,24 @@ int main(int argc, char **argv)
         
 
     //check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
+    
+    #ifdef SAVE
+    
+        MPI_File file;
+        MPI_Offset displacement;
+        MPI_Status status;
+        
+        
 
+        
+        displacement = (rank * N_LOC  + offset )* N * sizeof(double);
+        
+        MPI_File_open(MPI_COMM_WORLD, "result.bin", MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
+        MPI_File_set_view(file, displacement, MPI_CHAR, MPI_CHAR, "native", MPI_INFO_NULL);
+        MPI_File_write(file, C_TEMP_N, N_LOC * N * sizeof(double), MPI_CHAR, &status);
+        MPI_File_close(&file);
+    
+    #endif
 
 
 
@@ -279,3 +296,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+

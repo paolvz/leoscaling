@@ -138,9 +138,9 @@ int main(int argc, char **argv)
 
     // All Gather
 
-    double* B_TEMP_N = (double*)malloc((N / size + 1) * N * sizeof(double));
-    double* B_TEMP = (double*)malloc((N / size + 1) * N_LOC * sizeof(double));
-    double* C_TEMP_N = (double*)malloc(N_LOC * N * sizeof(double));
+    double*B_TEMP;
+    double*B_TEMP_N;
+    double*C_TEMP_N = (double*)malloc((long long int)N_LOC * N * sizeof(double));
     
     
     
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     
     cudaMalloc((void**)&cu_A_LOC, N_LOC * N * sizeof(double));
     cudaMalloc((void**)&cu_C_TEMP_N, N_LOC * N * sizeof(double));
-    cudaMalloc((void**)&cu_B_TEMP_N, (N / size + 1) * N * sizeof(double));
+    cudaMalloc((void**)&cu_B_TEMP_N, N * N * sizeof(double));
 
 
 
@@ -172,7 +172,9 @@ int main(int argc, char **argv)
 
     int N_COL = N_LOC;
    
+    B_TEMP_N = (double*)malloc(N * N * sizeof(double));
 
+    B_TEMP = (double*)malloc(N * N_LOC * sizeof(double));
 
     
 
@@ -307,7 +309,25 @@ int main(int argc, char **argv)
     /////// GPU /////////////
     
     
-    check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
+    //check_result(C_TEMP_N, B_LOC, N, N_LOC, rank);
+
+    #ifdef SAVE
+    
+        MPI_File file;
+        MPI_Offset displacement;
+        MPI_Status status;
+        
+        
+
+        
+        displacement = (rank * N_LOC  + offset )* N * sizeof(double);
+        
+        MPI_File_open(MPI_COMM_WORLD, "result.bin", MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &file);
+        MPI_File_set_view(file, displacement, MPI_CHAR, MPI_CHAR, "native", MPI_INFO_NULL);
+        MPI_File_write(file, C_TEMP_N, N_LOC * N * sizeof(double), MPI_CHAR, &status);
+        MPI_File_close(&file);
+    
+    #endif
     
 
     MPI_Reduce(&final_comp, &max_comp_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
