@@ -269,8 +269,7 @@ int main(int argc, char **argv)
         end_cpu_gpu = MPI_Wtime();
         final_gpu_cpu += end_cpu_gpu - start_cpu_gpu;
 
-        // dim3 block(32, 32);
-        // dim3 grid((N_LOC + block.x - 1) / block.x, (N_COL + block.y - 1) / block.y);
+
         
         const double alpha = 1.0;
         const double beta = 0.0;
