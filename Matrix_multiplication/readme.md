@@ -2,7 +2,7 @@
 
 There are three version of this implementation:
 - `rest_new_naive.c` naive parallel matrix multiplication on CPU
-- `rest_new_naive.c` blas parallel matrix multiplication on CPU (using MKL)
+- `rest_new_naive.c` blas parallel matrix multiplication on CPU (using MKL or OpenBLAS)
 - `rest_new_naive.c` CUDA cublas parallel matrix multiplication on GPU
 - 
 The default scaling settings are:
@@ -21,7 +21,7 @@ The default scaling settings are:
 
 Requirements: OpenMPI and OpenMP installation (latest)
 NOTE: *These are instructions only for the naive version. 
-The steps for the blas version are the same but you have to compile the `rest_new_blas.c` file with the Intel MKL library.*
+The steps for the blas version are the same but you have to compile the `rest_new_blas.c` file by linking the Intel MKL or OpenBLAS library.*
 
 1) Define enviroment variables
 
@@ -61,6 +61,7 @@ export $ACCOUNT=my_cpu_account
 with the name of you leonardo CPU account
 
 2) Run the scaling
+NOTE: *By default the blas version uses MKL, you can change to OpenBLAS by de-comment the rows related in `sbaleo.sh` and comment the MKL related rows*
 
 Running with METHOD=blas and MATRIX_SIZE=30000:
 ```
