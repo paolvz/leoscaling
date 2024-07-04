@@ -3,6 +3,7 @@
 #include <mpi.h>
 #include <omp.h>
 #include <mkl.h>
+#include <cblas.h>
 
 
 
