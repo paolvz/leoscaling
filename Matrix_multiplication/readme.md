@@ -21,7 +21,7 @@ The default scaling settings are:
 
 Requirements: OpenMPI and OpenMP installation (latest)
 NOTE: *These are instructions only for the naive version. 
-The steps for the blas version are the same but you have also to compile the Intel MKL library*
+The steps for the blas version are the same but you have to compile the 'rest_new_blas.c' file with the Intel MKL library.*
 
 1) Define enviroment variables
 
