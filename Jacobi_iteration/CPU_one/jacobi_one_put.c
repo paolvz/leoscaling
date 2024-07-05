@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 MPI_Barrier(MPI_COMM_WORLD);
 double start_comm = MPI_Wtime();
 
+if (size > 1){
 MPI_Win ghost_up_win, ghost_down_win;
 MPI_Win ghost_up_win_new, ghost_down_win_new;
 MPI_Info info;
@@ -163,7 +164,7 @@ MPI_Win_create(ghost_down, (MPI_Aint) N * sizeof(double), sizeof(double), info, 
 
 MPI_Win_create(ghost_up_new, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win_new);
 MPI_Win_create(ghost_down_new, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win_new);
-
+}
 double end_comm = MPI_Wtime();
 final_comm += end_comm - start_comm;
 
