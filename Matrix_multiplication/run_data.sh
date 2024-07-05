@@ -86,6 +86,11 @@ set style histogram rowstacked
 set style fill solid border -1
 set boxwidth 0.5 relative
 
+set style line 1 lt 1
+set style line 2 lt 2
+set style line 3 lt 3
+set style line 4 lt 4
+
 set palette defined (0 "red", 1 "green", 2 "blue")
 set key outside
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
@@ -98,19 +103,19 @@ set output 'plot_comp.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 3:xtic(4) title "Computation"
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 3:xtic(4) title "Computation" ls 3
 
 set output 'plot_comm.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 2:xtic(4) title "Communication"
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 2:xtic(4) title "Communication" ls 2
 
 set output 'plot_init.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 1:xtic(4) title "Initialization"  
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 1:xtic(4) title "Initialization" ls 1
 
 
 set output 'plot_speed.png'
@@ -143,6 +148,11 @@ set style histogram rowstacked
 set style fill solid border -1
 set boxwidth 0.5 relative
 
+set style line 1 lt 1
+set style line 2 lt 2
+set style line 3 lt 3
+set style line 4 lt 4
+
 set palette defined (0 "red", 1 "green", 2 "blue")
 set key outside
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
@@ -155,25 +165,25 @@ set output 'plot_comp.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 3:xtic(5) title "Computation"
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 3:xtic(5) title "Computation" ls 3
 
 set output 'plot_comm.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 2:xtic(5) title "Communication"
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 2:xtic(5) title "Communication" ls 2
 
 set output 'plot_init.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 1:xtic(5) title "Initialization"  
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 1:xtic(5) title "Initialization" ls 1
 
 set output 'plot_cpu_gpu.png'
 set title "MAT MUL | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 4:xtic(5) title "CPU-GPU"
+plot 'OUT_${METHOD}_${MATRIX_SIZE}.dat' using 4:xtic(5) title "CPU-GPU" ls 4
 
 set output 'plot_speed.png'
 set title "MAT MUL SPEEDUP | Size=$MATRIX_SIZE | Method=$METHOD | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 

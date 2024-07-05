@@ -78,6 +78,11 @@ set style histogram rowstacked
 set style fill solid border -1
 set boxwidth 0.5 relative
 
+set style line 1 lt 1
+set style line 2 lt 2
+set style line 3 lt 3
+set style line 4 lt 4
+
 set palette defined (0 "red", 1 "green", 2 "blue")
 set key outside
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
@@ -92,19 +97,19 @@ set output 'plot_comp.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 3:xtic(4) title "Computation"
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 3:xtic(4) title "Computation" ls 3
 
 set output 'plot_comm.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 2:xtic(4) title "Communication"
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 2:xtic(4) title "Communication" ls 2
 
 set output 'plot_init.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(4) title "Initialization"
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(4) title "Initialization" ls 1
 
 set output 'speedup.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
@@ -119,10 +124,3 @@ plot 'speedup.dat' using 2:1 with linespoints title "Speedup" lw 2, x title "Ide
 
 
 EOF
-
-
-   
-
-
-
-
