@@ -14,7 +14,7 @@ for i in 1 2 3 4 5
 do
 DATAFILE=OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}_\${i}.dat
 touch \$DATAFILE
-echo init_time comm_time comp_time num_nodes >> \$DATAFILE
+echo init_time comm_time comp_time win_time num_nodes >> \$DATAFILE
 
 for ((file=1; file<=16; file*=2))
 do
@@ -89,7 +89,7 @@ set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATI
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
 
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(4) title "Initialization", '' using 2:xtic(4) title "Commmunication", '' using 3:xtic(4) title "Computation"
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(5) title "Initialization", '' using 2:xtic(5) title "Commmunication", '' using 3:xtic(5) title "Computation", '' using 4:xtic(5) title "Window Creation"
 
 
 
@@ -97,19 +97,25 @@ set output 'plot_comp.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 3:xtic(4) title "Computation" ls 3
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 3:xtic(5) title "Computation" ls 3
 
 set output 'plot_comm.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 2:xtic(4) title "Communication" ls 2
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 2:xtic(5) title "Communication" ls 2
+
+set output 'plot_win.png'
+set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
+set xlabel "Number of Nodes" font ",16"
+set ylabel "Average Time (s)" font ",16"
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 4:xtic(5) title "Window Creation" ls 4
 
 set output 'plot_init.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16" 
 set xlabel "Number of Nodes" font ",16"
 set ylabel "Average Time (s)" font ",16"
-plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(4) title "Initialization" ls 1
+plot 'OUT_${MATRIX_SIZE}_${ITERATIONS}_${METHOD}.dat' using 1:xtic(5) title "Initialization" ls 1
 
 set output 'speedup.png'
 set title "CPU JACOBI ONE SIDE $METHOD | Size=$MATRIX_SIZE | Iterations=$ITERATIONS | Threads Per Task=$OMP_NUM_THREADS | Task Per Node=$NTASKS" font ",16"
@@ -124,3 +130,10 @@ plot 'speedup.dat' using 2:1 with linespoints title "Speedup" lw 2, x title "Ide
 
 
 EOF
+
+
+   
+
+
+
+

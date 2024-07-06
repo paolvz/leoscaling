@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     double max_init_time;
     double max_comm_time;
     double max_comp_time;
+    double max_wind_time;
 
     double final_comm = 0;
     double final_comp = 0;
@@ -134,9 +135,8 @@ int main(int argc, char **argv)
     ///////////////////////////
    
 MPI_Barrier(MPI_COMM_WORLD);
-double start_comm = MPI_Wtime();
+double start_wind = MPI_Wtime();
 
-if (size > 1){
 MPI_Win ghost_up_win, ghost_down_win;
 MPI_Win ghost_up_win_new, ghost_down_win_new;
 MPI_Info info;
@@ -158,6 +158,7 @@ double * ghost_down_new = MAT_LOC_NEW + (N_LOC-1) * N;
 double* first_row_point_new = MAT_LOC_NEW + N;
 double* last_row_point_new = MAT_LOC_NEW + (N_LOC-2) * N;
 
+if (size > 1){
 
 MPI_Win_create(ghost_up, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win);
 MPI_Win_create(ghost_down, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win);
@@ -165,8 +166,9 @@ MPI_Win_create(ghost_down, (MPI_Aint) N * sizeof(double), sizeof(double), info, 
 MPI_Win_create(ghost_up_new, (MPI_Aint)N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_up_win_new);
 MPI_Win_create(ghost_down_new, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &ghost_down_win_new);
 }
-double end_comm = MPI_Wtime();
-final_comm += end_comm - start_comm;
+
+double end_wind = MPI_Wtime();
+double final_wind = end_wind - start_wind;
 
 for (int iter= 0; iter <= NUM_ITER; iter++)
 
@@ -188,7 +190,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
    
     MPI_Barrier(MPI_COMM_WORLD);
-    start_comm = MPI_Wtime();
+    double start_comm = MPI_Wtime();
 
     
     
@@ -231,7 +233,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
     
 
-    end_comm = MPI_Wtime();
+    double end_comm = MPI_Wtime();
     final_comm += end_comm - start_comm;
 
     }
@@ -312,6 +314,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     MPI_Reduce(&final_comp, &max_comp_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Reduce(&final_comm, &max_comm_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Reduce(&final_init, &max_init_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&final_wind, &max_wind_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
     if (rank == 0)
     {
@@ -319,8 +322,9 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
         printf("\nInitialization Time (Max): %f seconds\n", max_init_time);
         printf("Communication Time (Max): %f seconds\n", max_comm_time);
         printf("Computation Time (Max): %f seconds\n", max_comp_time);
+        printf("Window Time (Max): %f seconds\n", max_wind_time);
 
-        printf("\n%f %f %f %s\n", max_init_time, max_comm_time, max_comp_time, getenv("SLURM_NNODES"));
+        printf("\n%f %f %f %f %s\n", max_init_time, max_comm_time, max_comp_time, max_wind_time, getenv("SLURM_NNODES"));
     }
     
     

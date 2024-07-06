@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     double max_init_time;
     double max_comm_time;
     double max_comp_time;
+    double max_wind_time;
 
     double final_comm = 0;
     double final_comp = 0;
@@ -134,9 +135,8 @@ int main(int argc, char **argv)
     ///////////////////////////
 
     MPI_Barrier(MPI_COMM_WORLD);
-    double start_comm = MPI_Wtime();
-    
-    if (size > 1){
+    double start_wind = MPI_Wtime();
+
     // MAT_LOC POINTERS
     double * ghost_up = MAT_LOC;
     double * ghost_down = MAT_LOC + (N_LOC-1) * N;
@@ -154,6 +154,9 @@ int main(int argc, char **argv)
     MPI_Win first_row_win, last_row_win;
     MPI_Win first_row_win_new, last_row_win_new;
     MPI_Info info;
+    
+    if (size > 1){
+
 
     MPI_Info_create(&info);
 
@@ -167,8 +170,8 @@ int main(int argc, char **argv)
     MPI_Win_create(last_row_point_new, (MPI_Aint) N * sizeof(double), sizeof(double), info, MPI_COMM_WORLD, &last_row_win_new);
     
     }
-    double end_comm = MPI_Wtime();
-    final_comm += end_comm - start_comm;
+    double end_wind = MPI_Wtime();
+    double final_wind = end_wind - start_wind;
 
 for (int iter= 0; iter <= NUM_ITER; iter++)
 
@@ -190,7 +193,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
    
     MPI_Barrier(MPI_COMM_WORLD);
-    start_comm = MPI_Wtime();
+    double start_comm = MPI_Wtime();
 
 
     if ( iter % 2 == 0){
@@ -236,7 +239,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
     
 
-    end_comm = MPI_Wtime();
+    double end_comm = MPI_Wtime();
     final_comm += end_comm - start_comm;
 
     }
@@ -315,6 +318,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     MPI_Reduce(&final_comp, &max_comp_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Reduce(&final_comm, &max_comm_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Reduce(&final_init, &max_init_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&final_wind, &max_wind_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
     if (rank == 0)
     {
@@ -322,8 +326,9 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
         printf("\nInitialization Time (Max): %f seconds\n", max_init_time);
         printf("Communication Time (Max): %f seconds\n", max_comm_time);
         printf("Computation Time (Max): %f seconds\n", max_comp_time);
+        printf("Window Creation Time (Max): %f seconds\n", max_wind_time);
 
-        printf("\n%f %f %f %s\n", max_init_time, max_comm_time, max_comp_time, getenv("SLURM_NNODES"));
+        printf("\n%f %f %f %f %s\n", max_init_time, max_comm_time, max_comp_time, max_wind_time, getenv("SLURM_NNODES"));
     }
     
     
