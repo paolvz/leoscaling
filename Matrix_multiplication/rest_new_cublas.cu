@@ -138,8 +138,8 @@ int main(int argc, char **argv)
 
     // All Gather
 
-    double*B_TEMP;
-    double*B_TEMP_N;
+    double* B_TEMP_N = (double*)malloc((long long int)(N / size + 1) * N * sizeof(double));
+    double* B_TEMP = (double*)malloc((long long int)(N / size + 1) * N_LOC * sizeof(double));
     double*C_TEMP_N = (double*)malloc((long long int)N_LOC * N * sizeof(double));
     
     
@@ -150,9 +150,9 @@ int main(int argc, char **argv)
     double *cu_B_TEMP_N;
     double *cu_C_TEMP_N;
     
-    cudaMalloc((void**)&cu_A_LOC, N_LOC * N * sizeof(double));
-    cudaMalloc((void**)&cu_C_TEMP_N, N_LOC * N * sizeof(double));
-    cudaMalloc((void**)&cu_B_TEMP_N, N * N * sizeof(double));
+    cudaMalloc((void**)&cu_A_LOC, (long long int)N_LOC * N * sizeof(double));
+    cudaMalloc((void**)&cu_C_TEMP_N, (long long int)N_LOC * N * sizeof(double));
+    cudaMalloc((void**)&cu_B_TEMP_N, (long long int)(N / size + 1) * N * sizeof(double));
 
 
 
@@ -172,9 +172,7 @@ int main(int argc, char **argv)
 
     int N_COL = N_LOC;
    
-    B_TEMP_N = (double*)malloc(N * N * sizeof(double));
-
-    B_TEMP = (double*)malloc(N * N_LOC * sizeof(double));
+   
 
     
 
