@@ -21,7 +21,9 @@ Library used: MPI (Cuda - Aware), OpenMP, Cuda, OpenACC, MKL and OpenBLAS.
 
 In each folder (are present the source .c codes, the runners (`run*` files) for loading the correct modules and compiling and the sbatch script (`sba_leo.sh`) to run the scaling.
 
-More detailed info provided in the readme of each implementation.
+More infos provided in the readme of each implementation.
+
+The `report.pdf` file contains the detailed analysis on the scalings performed and an overview of the algorithms used.
 
 # Setup 
 
