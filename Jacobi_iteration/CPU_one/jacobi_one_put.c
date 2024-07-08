@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     double *MAT_LOC = (double *)malloc(N_LOC * N * sizeof(double));
     double *MAT_LOC_NEW = (double *)malloc(N_LOC * N * sizeof(double));
     
-    MPI_Barrier(MPI_COMM_WORLD);
+    
     double start_init = MPI_Wtime();
 
     //// INNER INITIALIZATION ////
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 
     ///////////////////////////
    
-MPI_Barrier(MPI_COMM_WORLD);
+
 double start_wind = MPI_Wtime();
 
 MPI_Win ghost_up_win, ghost_down_win;
@@ -157,6 +157,7 @@ double * ghost_up_new = MAT_LOC_NEW;
 double * ghost_down_new = MAT_LOC_NEW + (N_LOC-1) * N;
 double* first_row_point_new = MAT_LOC_NEW + N;
 double* last_row_point_new = MAT_LOC_NEW + (N_LOC-2) * N;
+
 
 if (size > 1){
 
@@ -188,12 +189,10 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     if (size > 1){
 
     
-   
-    MPI_Barrier(MPI_COMM_WORLD);
     double start_comm = MPI_Wtime();
-
     
-    
+    MPI_Barrier(MPI_COMM_WORLD);
+   
 
     if (iter % 2 == 0){
 
@@ -240,7 +239,7 @@ for (int iter= 0; iter <= NUM_ITER; iter++)
     
     ///////////////////////////
 
-    MPI_Barrier(MPI_COMM_WORLD);
+    
     double start_comp = MPI_Wtime();
 
     ///// COMPUTATION /////
